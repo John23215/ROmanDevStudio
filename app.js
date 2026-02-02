@@ -12,9 +12,9 @@
 // CONFIG (edit these)
 // =========================
 const CONFIG = {
-  discord: "roman#0000",              // <-- change
-  email: "youremail@example.com",     // <-- change
-  github: "https://github.com/yourgithub", // optional
+  discord: "gelatogang",              // <-- change
+  email: "romansbccalirp@gmail.com",     // <-- change
+  github: "https://github.com/John23215", // optional
   stats: {
     bots_shipped: 12,
     servers_served: 80,
