@@ -197,85 +197,6 @@ function init3D(){
   });
 }
 
-
-/* ---------- Loader Upgrades (Access Gate + Sparks) ---------- */
-function setLoaderMouseVars(){
-  const card = document.querySelector(".loader-card");
-  if(!card) return;
-  function move(e){
-    const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    card.style.setProperty("--mx", x.toFixed(2) + "%");
-    card.style.setProperty("--my", y.toFixed(2) + "%");
-  }
-  window.addEventListener("pointermove", move);
-}
-
-function initSparks(){
-  const c = document.getElementById("sparks");
-  if(!c) return null;
-  const ctx = c.getContext("2d");
-  let w=0,h=0, dpr=1;
-  let parts = [];
-
-  function resize(){
-    dpr = Math.min(2, window.devicePixelRatio || 1);
-    w = c.width = Math.floor(c.clientWidth * dpr);
-    h = c.height = Math.floor(c.clientHeight * dpr);
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  function spawn(n=2){
-    for(let i=0;i<n;i++){
-      parts.push({
-        x: Math.random()*w,
-        y: h + Math.random()*40*dpr,
-        vx: (-0.5 + Math.random()) * 0.25 * dpr,
-        vy: -(0.9 + Math.random()*1.4) * dpr,
-        life: 0,
-        max: (30 + Math.random()*40) * dpr,
-        size: (0.8 + Math.random()*1.8) * dpr
-      });
-    }
-    if(parts.length > 220) parts = parts.slice(parts.length - 220);
-  }
-
-  const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let raf = 0;
-
-  function tick(){
-    raf = requestAnimationFrame(tick);
-    if(prefersReduce) return;
-    ctx.clearRect(0,0,w,h);
-
-    spawn(2);
-
-    for(const p of parts){
-      p.life += 1;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.02 * dpr;
-      const a = Math.max(0, 1 - (p.life / p.max));
-      ctx.fillStyle = `rgba(0,255,156,${(0.18*a).toFixed(3)})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size*1.8, 0, Math.PI*2);
-      ctx.fill();
-
-      ctx.fillStyle = `rgba(0,217,255,${(0.12*a).toFixed(3)})`;
-      ctx.beginPath();
-      ctx.arc(p.x+1*dpr, p.y-2*dpr, p.size, 0, Math.PI*2);
-      ctx.fill();
-    }
-    parts = parts.filter(p=>p.life < p.max && p.y < h+80*dpr);
-  }
-
-  tick();
-  return () => cancelAnimationFrame(raf);
-}
-
-
 /* ---------- Loader (matrix + terminal) ---------- */
 function initMatrix(){
   const c = document.getElementById("matrix");
@@ -347,35 +268,6 @@ async function runLoader(content){
   function refreshSfxBtn(){ if(sfxBtn) sfxBtn.textContent = `SFX: ${sfxEnabled ? "ON" : "OFF"}`; }
   refreshSfxBtn();
 
-  // Access gate (aesthetic): require Enter/submit before continuing
-  const gateForm = document.getElementById("gateForm");
-  const gateInput = document.getElementById("gateInput");
-  const gateEnter = document.getElementById("gateEnter");
-  const gateThemes = document.querySelectorAll(".gate-theme");
-
-  gateThemes.forEach(btn=>{
-    btn.addEventListener("click", ()=> setTheme(btn.getAttribute("data-theme")));
-  });
-
-  let gateUnlocked = false;
-  function unlockGate(){
-    if(gateUnlocked) return;
-    gateUnlocked = true;
-    try{ gateInput?.blur(); }catch(e){}
-    beep(1200, 0.05, "triangle", 0.06);
-    setTimeout(()=>beep(980, 0.06, "sine", 0.06), 70);
-    if(gateEnter) gateEnter.textContent = "GRANTED ✓";
-    if(gateInput) gateInput.value = "ACCESS GRANTED";
-  }
-
-  gateForm?.addEventListener("submit", (e)=>{
-    e.preventDefault();
-    unlockGate();
-  });
-
-  // Auto-focus input for the vibe
-  setTimeout(()=>gateInput?.focus(), 40);
-
   sfxBtn?.addEventListener("click", ()=>{
     sfxEnabled = !sfxEnabled;
     localStorage.setItem(SFX_KEY, sfxEnabled ? "on" : "off");
@@ -400,17 +292,6 @@ async function runLoader(content){
   await typeLine(term, ">>> ROMAN SYSTEM BOOT", 8);
   await typeLine(term, ">>> " + new Date().toISOString(), 8);
   await typeLine(term, ">>> ----------------------------------------", 6);
-
-  setLoaderMouseVars();
-  const stopSparks = initSparks();
-
-  await typeLine(term, "> enter password to continue (aesthetic)", 6);
-  await typeLine(term, "> hint: press ENTER", 6);
-
-  // Hold progression until access gate is unlocked (or user skips)
-  while(!gateUnlocked && !finished){
-    await sleep(60);
-  }
   for(const l of ascii){ await typeLine(term, l, 1); }
   await typeLine(term, ">>> ----------------------------------------", 6);
 
@@ -457,7 +338,6 @@ async function runLoader(content){
 
   skipBtn?.addEventListener("click", ()=>{
     finished = true;
-    unlockGate();
     setProgress(100, "skipping…");
   });
 
@@ -485,7 +365,6 @@ async function runLoader(content){
   await sleep(320);
 
   stopMatrix?.();
-  stopSparks?.();
 
   if(loader){
     loader.classList.add("fade");
