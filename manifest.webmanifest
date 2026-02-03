@@ -1,0 +1,9 @@
+{
+  "name": "Roman \u2014 Developer Portfolio",
+  "short_name": "Roman",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#02030a",
+  "theme_color": "#00ff9c",
+  "icons": []
+}

@@ -1,0 +1,204 @@
+{
+  "name": "Roman",
+  "age": 16,
+  "experienceYears": 2,
+  "subtitle": "Discord Bot Developer \u00b7 Web Apps \u00b7 APIs",
+  "heroLine": "Started coding at 14. Two years later, I'm building Discord systems that keep communities safe, organized, and fun \u2014 and learning the CS fundamentals behind it.",
+  "bio": "I\u2019m Roman \u2014 a 16-year-old developer obsessed with building reliable software. I love the intersection of community + engineering: bots that don\u2019t crash, dashboards that make sense, and systems with real permission design. My dream is to make it into Computer Engineering and keep leveling up how I build.",
+  "nowBuilding": "A next-gen moderation bot + dashboard stack (clean UX, safe permissions, fast performance).",
+  "focusLine": "Performance \u00b7 Permissions \u00b7 Clean architecture",
+  "discordUserId": "",
+  "discordTag": "roman#0000",
+  "email": "roman@example.com",
+  "links": {
+    "github": "https://github.com/",
+    "website": ""
+  },
+  "stats": [
+    {
+      "label": "Bots shipped",
+      "value": 12,
+      "suffix": "+",
+      "note": "Real features, not demos"
+    },
+    {
+      "label": "Servers reached",
+      "value": 250,
+      "suffix": "+",
+      "note": "Across my projects"
+    },
+    {
+      "label": "Uptime mindset",
+      "value": 99.9,
+      "suffix": "%",
+      "note": "Stability > hype"
+    }
+  ],
+  "skills": [
+    "Discord.js",
+    "Node.js",
+    "TypeScript",
+    "REST APIs",
+    "WebSockets",
+    "MongoDB",
+    "PostgreSQL",
+    "Redis",
+    "Docker",
+    "Linux",
+    "Git"
+  ],
+  "timeline": [
+    {
+      "xp": 120,
+      "age": 14,
+      "title": "Started coding",
+      "desc": "Built small scripts, learned the basics, got addicted to solving problems."
+    },
+    {
+      "xp": 420,
+      "age": 15,
+      "title": "First bots shipped",
+      "desc": "Commands, embeds, moderation tools \u2014 learning what breaks in real servers."
+    },
+    {
+      "xp": 860,
+      "age": 16,
+      "title": "Production systems",
+      "desc": "Rate-limit safety, logging, DB design, and clean architecture."
+    },
+    {
+      "xp": 1400,
+      "age": 18,
+      "title": "Computer Engineering",
+      "desc": "Deep CS fundamentals + building bigger systems. (The goal.)"
+    }
+  ],
+  "xp": {
+    "current": 860,
+    "label": "Builder"
+  },
+  "projects": [
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "desc": "Anti-raid + moderation suite with fast audit logs, smart filters, and safe automation.",
+      "stack": [
+        "Discord.js",
+        "TypeScript",
+        "Redis"
+      ],
+      "link": "#",
+      "caseStudy": {
+        "overview": "A moderation system built to stay calm during chaos: raids, spam waves, and rule-breaking \u2014 without nuking innocent users.",
+        "problem": "Growing servers get hit with spam and raids. Human moderation can\u2019t react fast enough, and basic automod setups often create false positives or miss coordinated attacks.",
+        "solution": "Sentinel uses a layered pipeline: fast filters \u2192 cooldowns \u2192 escalation rules \u2192 safe actions. Every action is logged, permission-gated, and designed for recovery.",
+        "architecture": [
+          "Gateway events \u2192 moderation pipeline (message/user/join signals)",
+          "Rules engine (cooldowns, thresholds, escalation)",
+          "Audit log writer (structured logs for staff review)",
+          "Cache for hot state (rate-limit + raid detection)",
+          "Persistent config (guild settings + role permissions)"
+        ],
+        "highlights": [
+          "Permission-safe actions (no accidental staff bans)",
+          "Anti-spam with adaptive cooldowns",
+          "Raid detection using join velocity + heuristics",
+          "Staff-friendly logs and review flow",
+          "Configurable per server (no hard-coded rules)"
+        ],
+        "results": [
+          "Faster response to spam waves with fewer false positives (compared to a simple keyword filter).",
+          "Cleaner staff workflow: logs show what happened and why an action triggered."
+        ],
+        "next": [
+          "Dashboard for rules + logs",
+          "More granular punishments (timeouts, role quarantines)",
+          "Better analytics for mod teams"
+        ]
+      }
+    },
+    {
+      "id": "pulse",
+      "name": "Pulse",
+      "desc": "Logging + analytics pipeline with real-time events, search, and dashboards.",
+      "stack": [
+        "Node.js",
+        "WebSockets",
+        "MongoDB"
+      ],
+      "link": "#",
+      "caseStudy": {
+        "overview": "A real-time event stream for Discord systems so you can see what\u2019s happening live.",
+        "problem": "Bots are hard to debug when everything is buried in console logs.",
+        "solution": "Centralized logging + searchable events + dashboards.",
+        "architecture": [
+          "Bot \u2192 event emitter \u2192 WebSocket stream",
+          "MongoDB event store",
+          "UI dashboard"
+        ],
+        "highlights": [
+          "Live updates",
+          "Searchable logs",
+          "Server-level filtering"
+        ],
+        "results": [
+          "Makes debugging and moderation reviews way easier."
+        ],
+        "next": [
+          "Add alerting (thresholds, anomalies)."
+        ]
+      }
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "desc": "Media bot with queue controls, filters, and clean UX (no lag, no drama).",
+      "stack": [
+        "Discord.js",
+        "Lavalink",
+        "PostgreSQL"
+      ],
+      "link": "#",
+      "caseStudy": {
+        "overview": "A music/media experience focused on stability and smooth controls.",
+        "problem": "Music bots become unstable when queues, voice, and rate-limits collide.",
+        "solution": "Clean queue state, predictable controls, and stable audio routing.",
+        "architecture": [
+          "Commands \u2192 player controller",
+          "Lavalink backend",
+          "DB for settings"
+        ],
+        "highlights": [
+          "Queue UX",
+          "Filters",
+          "Server presets"
+        ],
+        "results": [
+          "Less lag, fewer glitches, better UX."
+        ],
+        "next": [
+          "Add playlists + better discovery."
+        ]
+      }
+    }
+  ],
+  "services": [
+    {
+      "title": "Discord Bots",
+      "desc": "Moderation, utility, leveling, tickets, custom workflows."
+    },
+    {
+      "title": "Dashboards",
+      "desc": "OAuth2 login, settings panels, server analytics, logs."
+    },
+    {
+      "title": "Automation",
+      "desc": "Webhooks, integrations, clean systems that save time."
+    }
+  ],
+  "seo": {
+    "url": "https://example.com",
+    "ogImage": "https://example.com/og.png",
+    "description": "Roman is a 16-year-old developer building Discord bots and web apps. Projects, case studies, and contact."
+  }
+}

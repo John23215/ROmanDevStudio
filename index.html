@@ -1,471 +1,387 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="neon">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roman — Developer Portfolio</title>
+  <meta name="description" content="Roman is a 16-year-old developer building Discord bots and web apps. Projects, case studies, and contact." />
+  <meta name="theme-color" content="#00ff9c" />
 
-  <title>Roman — Discord Developer</title>
-  <meta name="description" content="Roman — 16-year-old Discord developer with 2 years of experience. Building bots, automation, and systems. Dream: Computing Engineering." />
-  <meta name="theme-color" content="#00ff88" />
-  <meta name="robots" content="index,follow" />
-  <meta name="author" content="Roman" />
-  <link rel="canonical" href="/" />
-
-  <!-- Open Graph (Discord embeds) -->
-  <meta property="og:title" content="Roman — Discord Developer" />
-  <meta property="og:description" content="Bots • Automation • Webhooks • APIs • Clean Systems" />
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="Roman — Developer Portfolio" />
+  <meta property="og:description" content="Roman is a 16-year-old developer building Discord bots and web apps. Projects, case studies, and contact." />
+  <meta property="og:url" content="https://example.com" />
+  <meta property="og:image" content="https://example.com/og.png" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Roman — Discord Developer" />
-  <meta name="twitter:description" content="Bots • Automation • Webhooks • APIs • Clean Systems" />
-
-  <!-- Fonts -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E %3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 x2=%221%22 y1=%220%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%2300ff9c%22/%3E%3Cstop offset=%221%22 stop-color=%22%2300d9ff%22/%3E%3C/linearGradient%3E%3C/defs%3E %3Crect width=%22128%22 height=%22128%22 rx=%2222%22 fill=%22%2305060a%22/%3E %3Cpath d=%22M36 92V36h34q12 0 19 7t7 18q0 11-7 18t-19 7H59v6h-23zm23-24h9q4 0 6-2t2-5q0-3-2-5t-6-2h-9v14z%22 fill=%22url(%23g)%22/%3E %3C/svg%3E">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Structured data (SEO) -->
+  <!-- Three.js (3D background) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Roman",
-    "description": "Discord bot developer. Builds automation, moderation, logging and integrations.",
-    "knowsAbout": ["Discord bots", "Node.js", "TypeScript", "APIs", "Automation"],
-    "url": "/"
+    "url": "https://example.com",
+    "jobTitle": "Developer",
+    "knowsAbout": ["Discord bots", "Node.js", "TypeScript", "Web APIs"]
   }
   </script>
 </head>
 
-<body class="scanlines noise">
-  <!-- Background layers -->
-  <canvas id="three-bg" aria-hidden="true"></canvas>
-  <canvas id="matrix" aria-hidden="true"></canvas>
+<body>
+  <div id="bg3d" aria-hidden="true"></div>
 
-  <!-- Overlay: Gate + Boot (aesthetic only) -->
-  <div id="overlay" role="dialog" aria-modal="true" aria-label="Portfolio access">
-    <div class="overlay-shell">
+  <!-- LOADER -->
+  <div id="loader" role="dialog" aria-label="Loading screen">
+    <canvas id="matrix" aria-hidden="true"></canvas>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
 
-      <!-- GATE -->
-      <section id="gate" class="overlay-panel">
-        <div class="overlay-top">
-          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="overlay-title">ACCESS TERMINAL • ROMAN</div>
-          <div class="overlay-chip" title="Aesthetic only">AESTHETIC</div>
+    <div class="loader-card">
+      <div class="shimmer" aria-hidden="true"></div>
+      <canvas id="sparks" aria-hidden="true"></canvas>
+      <div class="loader-top">
+        <div class="loader-brand">
+          <span class="brand-dot"></span>
+          <span class="brand-text">ROMAN // boot</span>
         </div>
-
-        <div class="gate-body">
-          <div class="gate-left">
-            <div class="gate-kicker">PRIVATE BUILD</div>
-            <h1 class="gate-headline">
-              <span class="glitch" data-text="AUTH REQUIRED">AUTH REQUIRED</span>
-            </h1>
-            <p class="gate-sub">
-              This is a <strong>visual</strong> access screen for style. No real security here — just vibes.
-            </p>
-
-            <form id="gateForm" class="gate-form" autocomplete="off">
-              <label class="sr-only" for="gateKey">Access key</label>
-              <input id="gateKey" class="gate-input" type="password" inputmode="text" placeholder="Enter access key" />
-              <button class="btn" type="submit">Unlock</button>
-            </form>
-
-            <div class="gate-hint">
-              Tip: type anything and press <span class="kbd">Enter</span>.
-            </div>
-
-            <div class="gate-status" id="gateStatus" aria-live="polite"></div>
-          </div>
-
-          <div class="gate-right">
-<pre class="ascii" aria-hidden="true">
-██████╗  ██████╗ ███╗   ███╗ █████╗ ███╗   ██╗
-██╔══██╗██╔═══██╗████╗ ████║██╔══██╗████╗  ██║
-██████╔╝██║   ██║██╔████╔██║███████║██╔██╗ ██║
-██╔══██╗██║   ██║██║╚██╔╝██║██╔══██║██║╚██╗██║
-██║  ██║╚██████╔╝██║ ╚═╝ ██║██║  ██║██║ ╚████║
-╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
-</pre>
-            <div class="gate-grid">
-              <div class="mini-card">
-                <div class="mini-k">MODE</div>
-                <div class="mini-v">STEALTH_UI</div>
-              </div>
-              <div class="mini-card">
-                <div class="mini-k">STATUS</div>
-                <div class="mini-v ok">STANDBY</div>
-              </div>
-              <div class="mini-card">
-                <div class="mini-k">LATENCY</div>
-                <div class="mini-v">~ 48ms</div>
-              </div>
-              <div class="mini-card">
-                <div class="mini-k">TARGET</div>
-                <div class="mini-v">PORTFOLIO</div>
-              </div>
-            </div>
-          </div>
+        <div class="loader-actions">
+          <button id="sfxToggle" class="chip" type="button" title="Toggle sound effects">SFX: ON</button>
+          <button id="skipBtn" class="chip" type="button" title="Skip loading">SKIP</button>
         </div>
-      </section>
-
-      <!-- BOOT -->
-      <section id="boot" class="overlay-panel hidden" aria-hidden="true">
-        <div class="overlay-top">
-          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="overlay-title">SECURE BOOT • SYSTEM INIT</div>
-          <div class="overlay-chip ok">ACCESS GRANTED</div>
-        </div>
-
-        <div class="boot-body">
-          <div class="terminal" id="terminal" role="status" aria-live="polite">
-            <div class="term-line">
-              <span class="prompt">root@roman</span>:<span class="path">~</span>$ <span id="typed"></span><span class="cursor" aria-hidden="true"></span>
-            </div>
-            <div id="log"></div>
-          </div>
-
-          <div class="boot-bottom">
-            <div class="boot-row">
-              <span id="statusText">Initializing modules…</span>
-              <span><span id="pct">0</span>%</span>
-            </div>
-            <div class="bar" aria-hidden="true"><i id="bar"></i></div>
-            <div class="boot-micro">
-              <span>Press <span class="kbd">/</span> for command palette</span>
-              <span class="muted">•</span>
-              <span class="muted">Ctrl+K supported</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- Command Palette -->
-  <div id="cmdk" class="cmdk hidden" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
-    <div class="cmdk-backdrop" data-close="1"></div>
-    <div class="cmdk-panel" role="document">
-      <div class="cmdk-top">
-        <div class="cmdk-title">Command Palette</div>
-        <div class="cmdk-hint"><span class="kbd">↑</span><span class="kbd">↓</span> <span class="kbd">Enter</span> <span class="kbd">Esc</span></div>
       </div>
-      <input id="cmdkInput" class="cmdk-input" placeholder="Type a command… (projects / contact / copy discord / toggle matrix)" autocomplete="off" />
-      <div id="cmdkList" class="cmdk-list" role="listbox" aria-label="Commands"></div>
-      <div class="cmdk-footer">
-        Tip: hit <span class="kbd">/</span> anytime (outside inputs).
+
+
+      <div class="gate">
+        <div class="gate-left">
+          <div class="gate-title">ACCESS GATE</div>
+          <div class="gate-sub">Type <b>enter</b> to continue. (Aesthetic only)</div>
+        </div>
+
+        <form id="gateForm" class="gate-form" autocomplete="off">
+          <input id="gateInput" spellcheck="false" placeholder="password: ********" />
+          <button id="gateEnter" class="chip" type="submit">ENTER</button>
+        </form>
+
+        <div class="gate-right">
+          <span class="gate-pill">THEME</span>
+          <button class="chip gate-theme" data-theme="neon" type="button">NEON</button>
+          <button class="chip gate-theme" data-theme="cyber" type="button">CYBER</button>
+          <button class="chip gate-theme" data-theme="red" type="button">RED</button>
+        </div>
+      </div>
+
+      <pre id="terminal" aria-label="Boot log"></pre>
+
+      <div class="loader-bottom">
+        <div class="bar" aria-hidden="true"><div class="fill" id="barFill"></div></div>
+        <div class="loader-meta">
+          <span id="statusText">initializing…</span>
+          <span id="pct">0%</span>
+        </div>
+        <div class="hint">
+          Press <span class="kbd">/</span> for commands · Click / Space to accelerate · <span class="kbd">T</span> theme
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- COMMAND PALETTE -->
+  <div id="palette" class="palette" hidden aria-hidden="true">
+    <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="palette-top">
+        <span class="palette-title">Command Palette</span>
+        <span class="palette-hint">Esc to close</span>
+      </div>
+      <input id="paletteInput" class="palette-input" autocomplete="off" spellcheck="false"
+             placeholder="Type: projects, contact, theme, open sentinel, xp..." />
+      <div id="paletteList" class="palette-list" role="listbox" aria-label="Commands"></div>
+      <div class="palette-footer">
+        <span class="kbd">↑</span><span class="kbd">↓</span> navigate
+        <span class="kbd">Enter</span> run
+        <span class="kbd">Esc</span> close
+      </div>
+    </div>
+  </div>
 
-  <!-- Main Site -->
-  <div class="wrap" id="top">
-    <header class="topbar">
-      <div class="brand">
-        <div class="name-row">
-          <div class="name glitch" data-text="Roman">Roman</div>
-          <span class="badge">Discord Dev</span>
+  <!-- CASE STUDY MODAL -->
+  <div id="caseModal" class="modal" hidden aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Project case study">
+      <div class="modal-head">
+        <div>
+          <div class="modal-kicker">Case study</div>
+          <div class="modal-title" id="caseTitle">Project</div>
         </div>
-        <div class="tagline">16 • 2 Years Experience • Future Computing Engineer</div>
+        <div class="modal-actions">
+          <button class="chip" id="copyCaseLink" type="button">Copy link</button>
+          <button class="chip" id="closeCase" type="button">Close</button>
+        </div>
       </div>
 
-      <nav class="nav">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#timeline">Timeline</a>
-        <a href="#contact">Contact</a>
-      </nav>
-
-      <div class="status-widget" title="Aesthetic status">
-        <span class="dot"></span>
-        <span id="liveStatus">Online • Building</span>
+      <div class="modal-tabs" role="tablist" aria-label="Case study sections">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="build">Build</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="results">Results</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="next">Next</button>
       </div>
-    </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-left card">
-          <div class="hero-kicker">DISCORD SYSTEMS • BOTS • AUTOMATION</div>
-          <h1 class="hero-title">
-            <span class="glitch" data-text="I build Discord bots that feel premium.">I build Discord bots that feel premium.</span>
-          </h1>
-          <p class="hero-sub">
-            I’m Roman — a <strong>16-year-old developer</strong> with <strong>2 years of experience</strong>.
-            I build bots and server systems that scale: moderation, tickets, logging, onboarding, and API integrations.
-            Dream: <strong>Computing Engineering</strong>.
-          </p>
+      <div class="modal-body" id="caseBody"></div>
+    </div>
+  </div>
 
-          <div class="hero-actions">
-            <button class="btn" id="copyDiscord" type="button">📎 Copy Discord</button>
-            <a class="btn secondary" href="#projects">⚡ View Projects</a>
-            <button class="btn ghost" id="openCmdk" type="button">⌘ Commands</button>
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="nav-logo" href="#top" title="Home">
+      <span class="nav-mark">R</span>
+      <span class="nav-title">Roman</span>
+      <span class="nav-tip">Press <span class="kbd">/</span></span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="pill">Contact</a>
+      <a href="admin.html" class="pill ghost" title="Edit site content">Admin</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="chip theme" data-theme="neon" type="button">NEON</button>
+      <button class="chip theme" data-theme="cyber" type="button">CYBER</button>
+      <button class="chip theme" data-theme="red" type="button">RED</button>
+    </div>
+  </nav>
+
+  <main id="top" class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="badges">
+          <span class="badge">16 y/o dev</span>
+          <span class="badge">2 years building</span>
+          <span class="badge live" id="presenceBadge">
+            <span class="dot" id="presenceDot"></span>
+            <span id="presenceMini">presence: not configured</span>
+          </span>
+        </div>
+
+        <h1 class="glitch" id="heroName" data-text="ROMAN">ROMAN</h1>
+
+        <p class="hero-subtitle" id="heroSubtitle">Discord Bot Developer · Web Apps · APIs</p>
+        <p class="hero-line" id="heroLine">Started coding at 14. Two years later, I'm building Discord systems that keep communities safe, organized, and fun — and learning the CS fundamentals behind it.</p>
+
+        <div class="hero-modes" aria-label="Hero modes">
+          <button class="mode active" data-mode="builder" type="button">Builder</button>
+          <button class="mode" data-mode="student" type="button">Student</button>
+          <button class="mode" data-mode="engineer" type="button">Engineer</button>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn" href="#projects">View projects</a>
+          <button class="btn ghost" id="deepDiveBtn" type="button">Deep dive: Sentinel</button>
+          <a class="btn ghost" href="#contact">Contact</a>
+        </div>
+
+        <div class="hero-mini">
+          <div class="mini-card">
+            <div class="mini-title">Now building</div>
+            <div class="mini-body" id="nowBuilding">A next-gen moderation bot + dashboard stack (clean UX, safe permissions, fast performance).</div>
           </div>
-
-          <div class="hero-terminal" aria-hidden="true">
-            <span class="prompt">roman@discord</span>:<span class="path">~</span>$
-            <span class="typing" id="heroTyping">building…</span>
+          <div class="mini-card">
+            <div class="mini-title">Focus</div>
+            <div class="mini-body" id="focusLine">Performance · Permissions · Clean architecture</div>
           </div>
+        </div>
+      </div>
 
-          <div class="hero-pills">
-            <span class="pill">🔒 Permission-safe</span>
-            <span class="pill">⚡ Fast & reliable</span>
-            <span class="pill">🧾 Logs & audits</span>
-            <span class="pill">🧠 Clean architecture</span>
+      <div class="hero-right">
+        <div class="card presence">
+          <div class="card-title">Discord Presence</div>
+          <div class="presence-row">
+            <span class="dot big" id="presenceDotBig"></span>
+            <div class="presence-text">
+              <div id="presenceStatus">Not configured</div>
+              <div class="muted" id="presenceActivity">Set your Discord User ID in <b>Admin</b> to show live status.</div>
+            </div>
+          </div>
+          <div class="presence-actions">
+            <a class="link" href="https://lanyard.rest/" target="_blank" rel="noreferrer">Powered by Lanyard</a>
           </div>
         </div>
 
-        <aside class="hero-right">
-          <div class="card stats-card">
-            <div class="card-title">
-              <h2>Stats</h2>
-              <span class="muted">edit in app.js</span>
-            </div>
-
-            <div class="stats-grid">
-              <div class="stat">
-                <div class="k">Bots shipped</div>
-                <div class="v"><span class="count" data-count="12">0</span>+</div>
-              </div>
-              <div class="stat">
-                <div class="k">Servers served</div>
-                <div class="v"><span class="count" data-count="80">0</span>+</div>
-              </div>
-              <div class="stat">
-                <div class="k">Users reached</div>
-                <div class="v"><span class="count" data-count="25000">0</span>+</div>
-              </div>
-              <div class="stat">
-                <div class="k">Uptime target</div>
-                <div class="v"><span class="count" data-count="99.9" data-decimals="1">0</span>%</div>
-              </div>
-            </div>
-
-            <div class="stats-note">
-              <span class="ok">•</span> Built for stability, rate-limits, and clean UX.
-            </div>
-          </div>
-
-          <div class="card quick-card">
-            <div class="card-title">
-              <h2>Stack</h2>
-              <span class="muted">swap to your real stack</span>
-            </div>
-            <div class="chips">
-              <span class="chip">discord.js</span>
-              <span class="chip">Node.js</span>
-              <span class="chip">TypeScript</span>
-              <span class="chip">MongoDB</span>
-              <span class="chip">Redis</span>
-              <span class="chip">Docker</span>
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      <section id="about" class="section">
-        <div class="section-head">
-          <h2>About</h2>
-          <span class="muted">What I build, how I build</span>
+        <div class="card stats">
+          <div class="card-title">Stats</div>
+          <div id="statsGrid" class="stats-grid"></div>
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>What I do</h3>
-            <p>
-              I build Discord bots and automations that stay reliable as servers grow:
-              moderation, ticket systems, onboarding, logging, custom commands, and integrations.
-            </p>
-            <div class="pills">
-              <span class="pill">Anti-spam / Anti-raid</span>
-              <span class="pill">Tickets + transcripts</span>
-              <span class="pill">Self-roles + onboarding</span>
-              <span class="pill">API/webhook integrations</span>
-            </div>
-          </div>
+      </div>
+    </section>
 
-          <div class="card">
-            <h3>How I build</h3>
-            <p>
-              I focus on clean architecture, strict permission checks, rate-limit safety,
-              and clear logs — so your bot is predictable, secure, and easy to maintain.
-            </p>
-            <div class="pills">
-              <span class="pill">Rate-limit shields</span>
-              <span class="pill">Audit logging</span>
-              <span class="pill">Validation everywhere</span>
-              <span class="pill">Performance-minded</span>
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <p class="muted">Click a project for a case study. (Or press <b>/</b> and type “open sentinel”.)</p>
+      </div>
+      <div id="projectsGrid" class="cards"></div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline" class="section">
+      <div class="section-head">
+        <h2>Timeline → XP</h2>
+        <p class="muted">From age 14 to Computer Engineering. Drag the slider to explore.</p>
+      </div>
+
+      <div class="timeline-grid">
+        <div class="card">
+          <div class="card-title">XP progress</div>
+
+          <div class="xp">
+            <div class="xp-top">
+              <span id="xpLabel">Level —</span>
+              <span id="xpNums">0 / 0 XP</span>
             </div>
+
+            <div class="xp-bar" aria-hidden="true"><div class="xp-fill" id="xpFill"></div></div>
+
+            <input id="xpSlider" type="range" min="0" max="1400" value="860" />
+            <div class="tiny muted">This slider is just for fun. It saves locally in your browser.</div>
           </div>
         </div>
-      </section>
 
-      <section id="skills" class="section">
-        <div class="section-head">
-          <h2>Skills</h2>
-          <span class="muted">Core areas</span>
+        <div class="card">
+          <div class="card-title">Milestones</div>
+          <div id="timelineList" class="timeline-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <p class="muted">Tools I use to ship.</p>
+      </div>
+      <div id="skillsGrid" class="skills-grid"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="section-head">
+        <h2>About</h2>
+        <p class="muted">Short version (the longer version is in the code).</p>
+      </div>
+
+      <div class="about">
+        <p id="aboutText">I’m Roman — a 16-year-old developer obsessed with building reliable software. I love the intersection of community + engineering: bots that don’t crash, dashboards that make sense, and systems with real permission design. My dream is to make it into Computer Engineering and keep leveling up how I build.</p>
+
+        <div class="terminal-card">
+          <div class="terminal-top">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">roman@portfolio:~</span>
+          </div>
+          <pre class="terminal-body" id="aboutTerminal"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Services</h2>
+        <p class="muted">If you need something built, I can help.</p>
+      </div>
+      <div id="servicesGrid" class="cards"></div>
+    </section>
+
+
+    <!-- BOT DEMO -->
+    <section id="demo" class="section">
+      <div class="section-head">
+        <h2>Interactive Bot Demo</h2>
+        <p class="muted">A fake Discord simulator. Type slash commands and watch the bot respond.</p>
+      </div>
+
+      <div class="demo-grid">
+        <div class="card demo">
+          <div class="discord-top">
+            <div class="server-pill">ROMAN LAB</div>
+            <div class="channel-pill"># bot-demo</div>
+            <div class="demo-actions">
+              <button class="chip" id="demoReset" type="button">Reset</button>
+              <button class="chip" id="demoCopy" type="button">Copy transcript</button>
+            </div>
+          </div>
+
+          <div class="discord-body" id="demoLog" aria-label="Discord demo chat log"></div>
+
+          <div class="discord-input">
+            <span class="prompt">></span>
+            <input id="demoInput" autocomplete="off" spellcheck="false" placeholder="Try: /help, /ticket create, /warn @user, /ban @user, /stats" />
+            <button class="chip" id="demoSend" type="button">Send</button>
+          </div>
+
+          <div class="tiny muted" style="margin-top:10px">
+            Tip: Press <b>/</b> for command palette → “open demo”. Press <b>Enter</b> to send. Press <b>↑</b> for command history.
+          </div>
         </div>
 
-        <div class="grid-3">
-          <div class="card">
-            <h3>Discord</h3>
-            <ul class="list">
-              <li>Slash commands, components, modals</li>
-              <li>Permissions & role gating</li>
-              <li>Rate limits & safe retries</li>
-              <li>Embeds, logs, dashboards</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Backend</h3>
-            <ul class="list">
-              <li>Node.js + TypeScript</li>
-              <li>REST APIs + Webhooks</li>
-              <li>Auth flows (OAuth style)</li>
-              <li>WebSockets & events</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Data & Ops</h3>
-            <ul class="list">
-              <li>Databases: Mongo / Postgres / SQLite</li>
-              <li>Caching: Redis-style patterns</li>
-              <li>Docker + Linux hosting basics</li>
-              <li>Monitoring + backups</li>
-            </ul>
-          </div>
+        <div class="card">
+          <div class="card-title">Available commands</div>
+          <div class="demo-cmds" id="demoCmds"></div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="projects" class="section">
-        <div class="section-head">
-          <h2>Projects</h2>
-          <span class="muted">Bots & systems</span>
-        </div>
 
-        <div class="grid-3">
-          <article class="card project">
-            <div class="proj-top">
-              <h3>Sentinel Moderation</h3>
-              <span class="proj-tag">Anti-raid</span>
-            </div>
-            <p>Advanced moderation: anti-spam, anti-raid shields, clean logs, configurable punishments.</p>
-            <div class="chips">
-              <span class="chip">Logs</span><span class="chip">Cooldowns</span><span class="chip">Permissions</span>
-            </div>
-          </article>
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <p class="muted">Let’s build something clean.</p>
+      </div>
 
-          <article class="card project">
-            <div class="proj-top">
-              <h3>TicketFlow</h3>
-              <span class="proj-tag">Support</span>
-            </div>
-            <p>Ticket panels, claim system, transcripts, staff analytics, permission-safe controls.</p>
-            <div class="chips">
-              <span class="chip">Panels</span><span class="chip">Transcripts</span><span class="chip">UX</span>
-            </div>
-          </article>
-
-          <article class="card project">
-            <div class="proj-top">
-              <h3>RoleForge</h3>
-              <span class="proj-tag">Onboarding</span>
-            </div>
-            <p>Self-roles & onboarding flows with modern components. No reaction spam.</p>
-            <div class="chips">
-              <span class="chip">Menus</span><span class="chip">Verify</span><span class="chip">Welcome</span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="timeline" class="section">
-        <div class="section-head">
-          <h2>Timeline</h2>
-          <span class="muted">From 14 → Computing Engineering</span>
-        </div>
-
-        <div class="card timeline">
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <div class="tl-content">
-              <div class="tl-title">Age 14 — Started building</div>
-              <div class="tl-desc">Got serious about coding and started learning by building small projects.</div>
-            </div>
+      <div class="contact">
+        <div class="contact-card">
+          <div class="contact-row">
+            <span class="k">Discord</span>
+            <span class="v" id="discordTag">roman#0000</span>
           </div>
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <div class="tl-content">
-              <div class="tl-title">Age 15 — First real Discord systems</div>
-              <div class="tl-desc">Built bots with logging, moderation tools, and server automation.</div>
-            </div>
+          <div class="contact-row">
+            <span class="k">Email</span>
+            <span class="v"><a id="emailLink" href="mailto:roman@example.com">roman@example.com</a></span>
           </div>
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <div class="tl-content">
-              <div class="tl-title">Age 16 — Production mindset</div>
-              <div class="tl-desc">Focus on stability: permissions, rate-limits, clean UX, and maintainable code.</div>
-            </div>
-          </div>
-          <div class="tl-item future">
-            <div class="tl-dot"></div>
-            <div class="tl-content">
-              <div class="tl-title">Next — Computing Engineering</div>
-              <div class="tl-desc">Keep building, learn deeper systems + hardware/software, and engineer at scale.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" class="section">
-        <div class="section-head">
-          <h2>Contact</h2>
-          <span class="muted">Fastest way: Discord</span>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <h3>Message me</h3>
-            <p>
-              Tell me your server size, what you want the bot to do, and any deadline.
-              I’ll reply with a plan.
-            </p>
-            <div class="hero-actions">
-              <button class="btn" id="copyDiscord2" type="button">📎 Copy Discord</button>
-              <a class="btn secondary" href="mailto:youremail@example.com">✉️ Email</a>
-            </div>
-            <div class="muted small">Tip: put this site link in your Discord “About Me”.</div>
+          <div class="contact-row">
+            <span class="k">GitHub</span>
+            <span class="v"><a id="githubLink" href="https://github.com/" target="_blank" rel="noreferrer">Open</a></span>
           </div>
 
-          <div class="card">
-            <h3>Quick note</h3>
-            <p class="small muted">
-              “Hacker” look = aesthetic only. I build legit software: clean code, safe permissions, stable systems.
-            </p>
-            <div class="pills">
-              <span class="pill">No fake claims</span>
-              <span class="pill">Real builds</span>
-              <span class="pill">Clean systems</span>
-            </div>
+          <div class="contact-actions">
+            <a class="btn" id="ctaEmail" href="mailto:roman@example.com">Email me</a>
+            <a class="btn ghost" id="ctaGithub" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+            <button class="btn ghost" id="copyDiscord" type="button">Copy Discord</button>
           </div>
+
+          <p class="tiny muted">Tip: Press <b>/</b> and type “copy discord”.</p>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
     <footer class="footer">
-      <div>© <span id="year"></span> Roman</div>
-      <div class="muted">Press <span class="kbd">/</span> for commands</div>
+      <p>© <span id="year"></span> Roman. Built with caffeine, code, and questionable sleep.</p>
     </footer>
-  </div>
+  </main>
 
-  <!-- Three.js (3D background) -->
-  <script defer src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script defer src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
